@@ -1,0 +1,84 @@
+You are a senior backend engineer.
+
+I want to build a production-ready, generic video downloader API using Python.
+
+Core requirements:
+- Backend framework: FastAPI
+- Downloader engine: yt-dlp
+- Video processing: ffmpeg
+- Deployment target: Docker (Google Cloud Run compatible)
+- This must be a backend API, NOT a frontend app
+
+Main goal:
+Create ONE universal downloader API that can download videos from multiple platforms
+(Facebook, Instagram, YouTube, TikTok, Twitter/X, etc.) using yt-dlp.
+
+Architecture rules (very important):
+1. Do NOT hardcode platform-specific logic like “facebook only”.
+2. Accept ANY yt-dlp supported URL.
+3. yt-dlp must automatically detect the platform.
+4. Audio + video must be merged into MP4 when needed.
+5. The API must return a clean JSON response for frontend usage.
+
+API design:
+- Endpoint: POST /download
+- Request body:
+{
+  "url": "any supported video url",
+  "quality": "best | worst | 360p | 720p | 1080p"
+}
+
+- Response format (normalize for all platforms):
+{
+  "status": "success",
+  "platform": "detected platform name",
+  "title": "video title",
+  "thumbnail": "thumbnail url",
+  "duration": number_in_seconds,
+  "download_url": "direct downloadable mp4 link"
+}
+
+Error response:
+{
+  "status": "error",
+  "message": "human readable error message"
+}
+
+Technical constraints:
+- Use yt-dlp as a Python library, NOT shell commands.
+- Use ffmpeg via yt-dlp for DASH audio/video merging.
+- Implement proper exception handling.
+- Implement basic rate limiting (IP based).
+- Add request timeout protection.
+- Make CORS enabled for frontend usage (React).
+
+Project structure:
+- app/main.py (FastAPI app)
+- app/services/ytdlp_service.py (yt-dlp logic only)
+- app/utils/platform_detect.py (optional helper)
+- app/models.py (Pydantic models)
+- Dockerfile (must include ffmpeg)
+- requirements.txt
+
+Docker requirements:
+- Python 3.11
+- ffmpeg installed
+- Expose port 8000
+- Must run with: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+Important notes:
+- This is NOT a scraping project.
+- This is NOT a frontend project.
+- This API will be consumed by a React frontend.
+- Keep the code clean, readable, and production-focused.
+- Do not add unnecessary features.
+
+Output expectations:
+1. Full FastAPI backend code
+2. Proper yt-dlp configuration
+3. Dockerfile
+4. requirements.txt
+5. Clear comments explaining key parts
+
+Think carefully before writing code.
+Build it like a real-world service, not a demo.
