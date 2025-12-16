@@ -76,7 +76,3 @@ downloads/
 *.mp4
 *.webm
 *.m4a
-
-__pycache__/
-node_modules/
-.env
